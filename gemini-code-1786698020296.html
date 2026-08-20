@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マイ黄金比タレ & まとめ印刷</title>
+  <style>
+    :root {
+      --primary-blue: #2196F3;
+      --border-color: #E0E0E0;
+      --bg-light: #F9F9F9;
+      --text-main: #333333;
+      --orange-accent: #FF5722;
+      --green-bg: #F0F7ED;
+      --green-border: #D3EA9D;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Hiragino Kaku Gothic ProN", "メイリオ", sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      padding: 12px;
+      padding-bottom: 90px;
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    /* タイトル */
+    header {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      color: #FF5722;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: bold;
+    }
+
+    /* レシピ選択 */
+    .selector-box {
+      margin-bottom: 14px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #FF7043;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--text-main);
+      background: #fff;
+      outline: none;
+    }
+
+    /* 写真枠 */
+    .photo-area {
+      border: 2px dashed #CCCCCC;
+      background-color: #F2F2F2;
+      border-radius: 12px;
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+
+    .photo-area span {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+
+    /* 分量コントロールエリア（スライダー＋人数ボタン） */
+    .amount-control-box {
+      background: #FFF3E0;
+      border: 1px solid #FFE0B2;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    /* 人数切り替えボタン (1人前〜3人前) */
+    .servings-selector {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .serving-btn {
+      flex: 1;
+      padding: 8px 0;
+      background: #ffffff;
+      border: 1.5px solid #FFB74D;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: #E65100;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .serving-btn.active {
+      background: #FF7043;
+      color: #ffffff;
+      border-color: #FF7043;
+    }
+
+    .slider-label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #FF5722;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      outline: none;
+      accent-color: var(--primary-blue);
+    }
+
+    /* タイトル（中央寄せ） */
+    .sauce-title {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    /* 計量カップ（SVGイラスト風） */
+    .cup-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .measuring-cup {
+      width: 140px;
+      height: 110px;
+      border: 4px solid #3E2723;
+      border-radius: 0 0 20px 20px;
+      position: relative;
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column-reverse;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .cup-layer {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #333;
+      transition: height 0.3s;
+    }
+
+    .layer-sugar { background: #E0E0E0; }
+    .layer-mirin { background: #FFE082; }
+    .layer-shoyu { background: #4E342E; color: #fff; }
+    .layer-mct { background: #C8E6C9; color: #2E7D32; }
+
+    /* 調味料分量リスト */
+    .ingredient-list {
+      margin-bottom: 16px;
+    }
+
+    .ing-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #E0E0E0;
+      font-size: 0.95rem;
+    }
+
+    /* 作れる料理タグ */
+    .dishes-box {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .dishes-title {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #2E7D32;
+      margin-bottom: 8px;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .dish-tag {
+      background: #fff;
+      border: 1px solid #C8E6C9;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      color: #333;
+    }
+
+    /* ケトン用情報表示 */
+    .ketone-box {
+      background: #E8F5E9;
+      border: 1px solid #A5D6A7;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: #1B5E20;
+    }
+
+    /* 🔊 スピーカーボタン */
+    .speak-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .btn-speak {
+      background: #fff;
+      border: 1px solid #FF7043;
+      color: #FF5722;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* お気に入りボタン */
+    .btn-save {
+      width: 100%;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>🍳 マイ黄金比タレ & まとめ印刷</h1>
+    </header>
+
+    <!-- 🔊 スピーカー読み上げボタン -->
+    <div class="speak-bar">
+      <button class="btn-speak" onclick="speakCurrentRecipe()">🔊 分量を声で聞く</button>
+    </div>
+
+    <!-- レシピ選択 -->
+    <div class="selector-box">
+      <select id="sauceSelect" onchange="changeSauce()">
+        <option value="kaeshi">【万能つゆ】自家製返し（醤油・みりん・砂糖）</option>
+        <option value="shogayaki">【定番】生姜焼き・照り焼きタレ</option>
+        <option value="keto_mct">【ケトン食】MCTオイル万能ドレッシング</option>
+      </select>
+    </div>
+
+    <!-- 写真エリア -->
+    <div class="photo-area">
+      <span>📷</span>
+      <div>料理写真をセット</div>
+    </div>
+
+    <!-- 分量調整（1〜3人前ボタン ＋ スライダー） -->
+    <div class="amount-control-box">
+      <!-- 1人前, 2人前, 3人前 ボタン -->
+      <div class="servings-selector">
+        <button class="serving-btn" onclick="setServings(1)">1人前 (150g)</button>
+        <button class="serving-btn active" onclick="setServings(2)">2人前 (300g)</button>
+        <button class="serving-btn" onclick="setServings(3)">3人前 (450g)</button>
+      </div>
+
+      <div class="slider-label">
+        <span>食材の分量:</span>
+        <span><strong id="weightVal">300</strong> g</span>
+      </div>
+      <input type="range" id="weightSlider" min="50" max="600" step="25" value="300" oninput="onSliderInput()">
+    </div>
+
+    <!-- タイトル -->
+    <div class="sauce-title" id="sauceDisplayName">自家製返し（万能つゆ）の比率</div>
+
+    <!-- 計量カップ -->
+    <div class="cup-container">
+      <div class="measuring-cup" id="cupGraphics"></div>
+    </div>
+
+    <!-- 分量リスト -->
+    <div class="ingredient-list" id="ingredientList"></div>
+
+    <!-- ケトン食補言 -->
+    <div class="ketone-box" id="ketoneBox" style="display: none;">
+      🥑 <strong>ケトン補言:</strong> 目標脂質に対し、追加MCTオイル <span id="ketoOilNeed">10</span>g が推奨されます。
+    </div>
+
+    <!-- 作れる料理 -->
+    <div class="dishes-box">
+      <div class="dishes-title">💡 このソースで作れる料理</div>
+      <div class="tag-container" id="dishesTags"></div>
+    </div>
+
+    <button class="btn-save">📌 印刷リストに保存（お気に入り）</button>
+  </div>
+
+  <script>
+    const sauces = {
+      kaeshi: {
+        name: "自家製返し（万能つゆ）",
+        baseWeight: 300, // 2人前基準
+        ingredients: [
+          { name: "醤油", baseMl: 60, ratioVal: 60, colorClass: "layer-shoyu" },
+          { name: "みりん", baseMl: 20, ratioVal: 20, colorClass: "layer-mirin" },
+          { name: "砂糖", baseMl: 10, ratioVal: 10, colorClass: "layer-sugar" }
+        ],
+        dishes: ["蕎麦つゆ", "魚の煮付け", "炊き込みご飯", "すき焼きのタレ", "茄子の煮浸し", "豚の生姜焼き"]
+      },
+      shogayaki: {
+        name: "生姜焼き・照り焼きタレ",
+        baseWeight: 300,
+        ingredients: [
+          { name: "醤油", baseMl: 30, ratioVal: 30, colorClass: "layer-shoyu" },
+          { name: "みりん", baseMl: 30, ratioVal: 30, colorClass: "layer-mirin" },
+          { name: "酒", baseMl: 30, ratioVal: 30, colorClass: "layer-sugar" }
+        ],
+        dishes: ["豚の生姜焼き", "鶏の照り焼き", "ぶりの照り焼き"]
+      },
+      keto_mct: {
+        name: "MCTオイル万能ドレッシング",
+        baseWeight: 300,
+        isKetone: true,
+        targetFatG: 35,
+        ingredients: [
+          { name: "MCTオイル", baseMl: 30, ratioVal: 30, colorClass: "layer-mct" },
+          { name: "醤油", baseMl: 15, ratioVal: 15, colorClass: "layer-shoyu" },
+          { name: "酢", baseMl: 15, ratioVal: 15, colorClass: "layer-mirin" }
+        ],
+        dishes: ["ケトンサラダ", "蒸し鶏のオイルがけ", "アボカド和え"]
+      }
+    };
+
+    let currentSauceKey = "kaeshi";
+
+    // 人数ボタン変更 (1人前:150g, 2人前:300g, 3人前:450g)
+    function setServings(num) {
+      const gMap = { 1: 150, 2: 300, 3: 450 };
+      const targetG = gMap[num];
+
+      document.getElementById("weightSlider").value = targetG;
+
+      // ボタンの見た目更新
+      const btns = document.querySelectorAll('.serving-btn');
+      btns.forEach((btn, idx) => {
+        btn.classList.toggle('active', idx + 1 === num);
+      });
+
+      updateCalculations();
+    }
+
+    function onSliderInput() {
+      // スライダーを動かした時はボタンの選択を一旦外す
+      document.querySelectorAll('.serving-btn').forEach(btn => btn.classList.remove('active'));
+      updateCalculations();
+    }
+
+    function changeSauce() {
+      currentSauceKey = document.getElementById("sauceSelect").value;
+      updateCalculations();
+    }
+
+    function updateCalculations() {
+      const sauce = sauces[currentSauceKey];
+      const weight = parseInt(document.getElementById("weightSlider").value);
+      document.getElementById("weightVal").innerText = weight;
+      document.getElementById("sauceDisplayName").innerText = `${sauce.name} の比率`;
+
+      const multiplier = weight / sauce.baseWeight;
+
+      const listEl = document.getElementById("ingredientList");
+      const cupEl = document.getElementById("cupGraphics");
+      listEl.innerHTML = "";
+      cupEl.innerHTML = "";
+
+      let totalMl = 0;
+      sauce.ingredients.forEach(ing => totalMl += (ing.baseMl * multiplier));
+
+      sauce.ingredients.forEach(ing => {
+        const ml = Math.round(ing.baseMl * multiplier);
+
+        // リスト描画
+        const row = document.createElement("div");
+        row.className = "ing-row";
+        row.innerHTML = `<span>${ing.name}</span><strong>${ml} ml</strong>`;
+        listEl.appendChild(row);
+
+        // カップレイヤー
+        const layerHeightPct = ((ing.baseMl * multiplier) / totalMl) * 100;
+        const layer = document.createElement("div");
+        layer.className = `cup-layer ${ing.colorClass}`;
+        layer.style.height = `${layerHeightPct}%`;
+        layer.innerHTML = `<span>${ing.name}</span><span>${ing.ratioVal}</span>`;
+        cupEl.appendChild(layer);
+      });
+
+      // ケトン判定
+      const ketoneBox = document.getElementById("ketoneBox");
+      if (sauce.isKetone) {
+        ketoneBox.style.display = "block";
+        const currentOil = Math.round(30 * multiplier);
+        const need = Math.max(0, sauce.targetFatG - currentOil);
+        document.getElementById("ketoOilNeed").innerText = need;
+      } else {
+        ketoneBox.style.display = "none";
+      }
+
+      // タグ
+      const tagEl = document.getElementById("dishesTags");
+      tagEl.innerHTML = "";
+      sauce.dishes.forEach(dish => {
+        const tag = document.createElement("div");
+        tag.className = "dish-tag";
+        tag.innerText = dish;
+        tagEl.appendChild(tag);
+      });
+    }
+
+    // 🔊 スピーカー読み上げ
+    function speakCurrentRecipe() {
+      const sauce = sauces[currentSauceKey];
+      const weight = document.getElementById("weightSlider").value;
+      const multiplier = weight / sauce.baseWeight;
+
+      let text = `${sauce.name}。食材 ${weight} グラム分の分量は、`;
+      sauce.ingredients.forEach(ing => {
+        const ml = Math.round(ing.baseMl * multiplier);
+        text += `${ing.name} ${ml}ミリリットル、`;
+      });
+
+      const uttr = new SpeechSynthesisUtterance(text);
+      uttr.lang = "ja-JP";
+      window.speechSynthesis.speak(uttr);
+    }
+
+    // 初期実行
+    updateCalculations();
+  </script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マイ黄金比レシピナビ</title>
+  <style>
+    :root {
+      --primary: #ff6b35;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: #333;
+      margin: 0;
+      padding: 15px;
+      line-height: 1.5;
+    }
+    .app-header {
+      text-align: center;
+      padding-bottom: 10px;
+    }
+    .app-header h1 { margin: 0; color: var(--primary); font-size: 1.5rem; }
+
+    /* メインカード */
+    .recipe-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border: 2px solid #eee;
+    }
+
+    /* ソース選択タブ */
+    .source-selector {
+      margin-bottom: 15px;
+    }
+    .source-selector select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+      font-weight: bold;
+    }
+
+    /* 写真エリア */
+    .photo-area {
+      width: 100%;
+      height: 180px;
+      background: #f0f0f0;
+      border-radius: 12px;
+      border: 2px dashed #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    .photo-area img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* スライダー */
+    .control-group {
+      background: #fff8f5;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ffe0d0;
+    }
+    .control-group label { font-weight: bold; display: block; margin-bottom: 5px; color: var(--primary); }
+    .control-group input[type="range"] { width: 100%; }
+
+    /* 視覚的計量カップ */
+    .cup-container { margin: 15px 0; }
+    .cup-title { font-weight: bold; margin-bottom: 8px; text-align: center; }
+    .cup-visual {
+      border: 4px solid #333;
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      width: 160px;
+      margin: 0 auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column-reverse;
+      background: #fafafa;
+    }
+    .cup-layer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.85rem;
+      transition: height 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .layer-dashi { background-color: #e6a15c; }
+    .layer-shoyu { background-color: #4a2c11; }
+    .layer-mirin { background-color: #f7c873; color: #333; }
+    .layer-shio  { background-color: #b0c4de; color: #333; }
+    .layer-satou { background-color: #e0e0e0; color: #333; }
+
+    .seasoning-list { list-style: none; padding: 0; margin: 15px 0; }
+    .seasoning-list li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; }
+
+    /* 応用料理バーバッと表示エリア */
+    .dishes-area {
+      background: #f1f8e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 15px;
+    }
+    .dishes-area h3 { margin: 0 0 8px 0; color: #2e7d32; font-size: 1rem; }
+    .dish-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .dish-tag {
+      background: white;
+      border: 1px solid #a5d6a7;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      color: #1b5e20;
+    }
+
+    /* ボタン類 */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+    .btn-stock { background: #2196f3; color: white; }
+    .btn-print { background: #4caf50; color: white; }
+
+    /* お気に入り（印刷ストック）一覧 */
+    .stock-area {
+      background: white;
+      border-radius: 16px;
+      padding: 15px;
+      max-width: 500px;
+      margin: 0 auto;
+      border: 2px dashed #4caf50;
+    }
+    .stock-title { font-weight: bold; color: #2e7d32; margin-bottom: 10px; text-align: center; }
+    .stock-list { list-style: none; padding: 0; margin: 0 0 10px 0; }
+    .stock-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+
+    /* コンビニプリント案内 */
+    .convenience-info {
+      background: #fff9c4;
+      border: 1px solid #fbc02d;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-top: 10px;
+    }
+
+    /* 印刷用スタイル（まとめ印刷） */
+    @media print {
+      body { background: white; padding: 0; }
+      .app-header, .control-group, .btn, .convenience-info, .photo-area input, .source-selector { display: none !important; }
+      .recipe-card { display: none; } /* 単体カードは非表示 */
+      .stock-area { border: none; max-width: 100%; }
+      .print-page {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 1枚に複数並べる */
+        gap: 15px;
+        page-break-inside: avoid;
+      }
+      .print-card {
+        border: 2px solid #000;
+        padding: 10px;
+        border-radius: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-header">
+    <h1>🍳 マイ黄金比タレ＆まとめ印刷</h1>
+  </div>
+
+  <div class="recipe-card">
+    <!-- ソース切替 -->
+    <div class="source-selector">
+      <select id="sourceSelect" onchange="changeSource()">
+        <option value="kaeshi">【万能つゆ】自家製返し（醤油・みりん・砂糖）</option>
+        <option value="garibata">【食欲爆発】ガリバタ黄金タレ</option>
+        <option value="amazu">【さっぱり】万能甘酢ダレ</option>
+      </select>
+    </div>
+
+    <!-- 写真パシャリ枠 -->
+    <div class="photo-area" onclick="document.getElementById('photoInput').click()">
+      <div id="photoPlaceholder" style="text-align: center;">
+        <span style="font-size: 2rem;">📷</span>
+        <p>料理写真をセット</p>
+      </div>
+      <img id="photoPreview" style="display: none;">
+      <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="loadPhoto(event)">
+    </div>
+
+    <!-- 食材量スライダー -->
+    <div class="control-group">
+      <label for="meatWeight">食材の分量: <span id="weightVal">300</span>g</label>
+      <input type="range" id="meatWeight" min="100" max="1000" step="50" value="300" oninput="calculateSeasoning()">
+    </div>
+
+    <!-- 計量カップ -->
+    <div class="cup-container">
+      <div class="cup-title" id="sourceTitle">自家製返しの比率</div>
+      <div class="cup-visual" id="cupVisual">
+        <!-- 動的生成 -->
+      </div>
+    </div>
+
+    <!-- 調味料一覧 -->
+    <ul class="seasoning-list" id="seasoningList">
+      <!-- 動的生成 -->
+    </ul>
+
+    <!-- 応用料理バーバッ表示 -->
+    <div class="dishes-area">
+      <h3>💡 このソースで作れる料理</h3>
+      <div class="dish-tags" id="dishTags">
+        <!-- 動的生成 -->
+      </div>
+    </div>
+
+    <button class="btn btn-stock" onclick="addToStock()">📌 印刷リストに保存（お気に入り）</button>
+  </div>
+
+  <!-- まとめ印刷ストックエリア -->
+  <div class="stock-area">
+    <div class="stock-title">🖨️ まとめ印刷リスト (<span id="stockCount">0</span>件)</div>
+    <div class="stock-list" id="stockList">
+      <p style="color: #999; text-align: center; font-size: 0.85rem;" id="emptyMsg">お気に入りに入れたソースがここに並びます</p>
+    </div>
+
+    <button class="btn btn-print" onclick="window.print()">📄 まとめて壁貼り用に印刷 / PDF保存</button>
+
+    <div class="convenience-info">
+      <strong>🏪 コンビニ（セブン/ローソン等）で印刷するコツ：</strong><br>
+      ①「まとめ印刷」ボタンを押す<br>
+      ② 送信先を<b>「PDFとして保存」</b>にしてスマホに保存<br>
+      ③ コンビニのマルチコピー機アプリ（ネットプリント等）にアップロードすれば、お店で即ポスター風に印刷完了にゃ！
+    </div>
+  </div>
+
+  <script>
+    // ソースデータベース
+    const sourceData = {
+      kaeshi: {
+        name: '自家製返し（万能つゆ）',
+        baseWeight: 300,
+        ingredients: [
+          { id: 'shoyu', name: '醤油', base: 60, class: 'layer-shoyu' },
+          { id: 'mirin', name: 'みりん', base: 20, class: 'layer-mirin' },
+          { id: 'satou', name: '砂糖', base: 10, class: 'layer-satou' }
+        ],
+        dishes: ['🍜 蕎麦つゆ', '🐟 魚の煮付け', '🍚 炊き込みご飯', '🍲 すき焼きのタレ', '🍆 茄子の煮浸し', '🥩 豚の生姜焼き']
+      },
+      garibata: {
+        name: 'ガリバタ黄金タレ',
+        baseWeight: 300,
+        ingredients: [
+          { id: 'shoyu', name: '醤油', base: 30, class: 'layer-shoyu' },
+          { id: 'mirin', name: 'みりん', base: 30, class: 'layer-mirin' },
+          { id: 'satou', name: 'ニンニク(g)', base: 10, class: 'layer-satou' },
+          { id: 'shio',  name: 'バター(g)', base: 15, class: 'layer-shio' }
+        ],
+        dishes: ['🥩 チキンステーキ', '🦐 エビのガリバタ炒め', '🍄 茸のバター炒め', '🍚 ガリバタライス']
+      },
+      amazu: {
+        name: '万能甘酢ダレ',
+        baseWeight: 300,
+        ingredients: [
+          { id: 'dashi', name: '酢', base: 40, class: 'layer-dashi' },
+          { id: 'satou', name: '砂糖', base: 30, class: 'layer-satou' },
+          { id: 'shoyu', name: '醤油', base: 20, class: 'layer-shoyu' }
+        ],
+        dishes: ['🍗 チキン南蛮', '🥬 中華風甘酢和え', '🐟 魚の南蛮漬け', '🥟 餃子のタレ']
+      }
+    };
+
+    let currentSourceKey = 'kaeshi';
+    let stockList = [];
+
+    function changeSource() {
+      currentSourceKey = document.getElementById('sourceSelect').value;
+      calculateSeasoning();
+    }
+
+    function calculateSeasoning() {
+      const source = sourceData[currentSourceKey];
+      const weight = parseInt(document.getElementById('meatWeight').value);
+      document.getElementById('weightVal').textContent = weight;
+      document.getElementById('sourceTitle').textContent = source.name + ' の比率';
+
+      const ratio = weight / source.baseWeight;
+
+      // カップとリストの描画
+      const cupVisual = document.getElementById('cupVisual');
+      const seasoningList = document.getElementById('seasoningList');
+      cupVisual.innerHTML = '';
+      seasoningList.innerHTML = '';
+
+      source.ingredients.forEach(item => {
+        const amount = Math.round((item.base * ratio) * 10) / 10;
+        const unit = item.name.includes('(g)') ? '' : ' ml';
+
+        // カップの層
+        const layer = document.createElement('div');
+        layer.className = `cup-layer ${item.class}`;
+        layer.style.height = Math.max(amount * 1.5, 25) + 'px';
+        layer.innerHTML = `<span>${item.name}</span><span>${amount}</span>`;
+        cupVisual.appendChild(layer);
+
+        // リスト
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${item.name}</span><strong>${amount}${unit}</strong>`;
+        seasoningList.appendChild(li);
+      });
+
+      // 料理タグ描画
+      const dishTags = document.getElementById('dishTags');
+      dishTags.innerHTML = '';
+      source.dishes.forEach(dish => {
+        const tag = document.createElement('span');
+        tag.className = 'dish-tag';
+        tag.textContent = dish;
+        dishTags.appendChild(tag);
+      });
+    }
+
+    // ストックに追加
+    function addToStock() {
+      const source = sourceData[currentSourceKey];
+      const weight = document.getElementById('meatWeight').value;
+      stockList.push({ name: source.name, weight: weight, key: currentSourceKey });
+      renderStock();
+    }
+
+    function renderStock() {
+      const listEl = document.getElementById('stockList');
+      const countEl = document.getElementById('stockCount');
+      const emptyMsg = document.getElementById('emptyMsg');
+      
+      countEl.textContent = stockList.length;
+      if(stockList.length > 0) emptyMsg.style.display = 'none';
+
+      listEl.innerHTML = '';
+      stockList.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'stock-item';
+        div.innerHTML = `<span><b>${item.name}</b> (${item.weight}g用)</span> <button onclick="removeItem(${index})" style="color:red; border:none; background:none; cursor:pointer;">✖</button>`;
+        listEl.appendChild(div);
+      });
+    }
+
+    function removeItem(index) {
+      stockList.splice(index, 1);
+      renderStock();
+    }
+
+    function loadPhoto(event) {
+      const reader = new FileReader();
+      reader.onload = function(){
+        const img = document.getElementById('photoPreview');
+        img.src = reader.result;
+        img.style.display = 'block';
+        document.getElementById('photoPlaceholder').style.display = 'none';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    calculateSeasoning();
+  </script>
+</body>
+</html>

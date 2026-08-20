@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>黄金比ソース手帳 - にゃんこ先生スペシャル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --bg-color: #f7f2e7;
+      --card-bg: #ffffff;
+      --primary-color: #bd6b28;
+      --primary-hover: #9c541c;
+      --accent-color: #e07a5f;
+      --text-main: #4a3b32;
+      --text-sub: #7d6c61;
+      --border-color: #ebdccb;
+      --tag-bg: #f3ede2;
+      --keton-color: #2b8a3e;
+      --link-bg: #fff3bf;
+      --link-hover: #ffe066;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      padding-bottom: 90px;
+    }
+
+    header {
+      background-color: #f0e6d2;
+      padding: 16px 20px;
+      border-bottom: 2px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      position: sticky;
+      top: 0;
+      z-index: 80;
+    }
+
+    .header-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      background-color: var(--primary-color);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      font-family: 'Kiwi Maru', serif;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: 'Kiwi Maru', serif;
+    }
+
+    .header-badge {
+      background-color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--primary-color);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    /* メインモード切替タブ */
+    .mode-switch-container {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .mode-btn {
+      flex: 1;
+      min-width: 130px;
+      padding: 12px 10px;
+      border-radius: 24px;
+      border: 2px solid var(--primary-color);
+      background-color: #ffffff;
+      color: var(--primary-color);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .mode-btn.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
+
+    .mode-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ケトン食・1日スタイルガイドカード */
+    .keton-style-banner {
+      background-color: #e6fcf5;
+      border: 2px dashed #20c997;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .keton-style-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0ca678;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .style-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .style-chip {
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: white;
+      border: 1.5px solid #20c997;
+      color: #0ca678;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .style-chip.active {
+      background: #20c997;
+      color: white;
+    }
+
+    .keton-info-box {
+      font-size: 13px;
+      color: #2b8a3e;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      line-height: 1.5;
+    }
+
+    /* カテゴリータブ */
+    .category-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+
+    .cat-btn {
+      padding: 8px 16px;
+      background-color: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 20px;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cat-btn.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-color: var(--primary-color);
+    }
+
+    /* 検索バー */
+    .search-status-bar {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .search-input-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .search-input-box input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 15px;
+      color: var(--text-main);
+      font-family: inherit;
+      background: transparent;
+    }
+
+    /* レシピカード */
+    .recipe-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .recipe-card {
+      background-color: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      transition: all 0.2s ease;
+    }
+
+    /* 写真機能エリア */
+    .recipe-image-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background-color: #f3ede2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .recipe-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-add-overlay {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1.5px solid var(--primary-color);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--primary-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s;
+    }
+
+    .photo-add-overlay:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .recipe-card-body {
+      padding: 20px;
+    }
+
+    .recipe-header {
+      margin-bottom: 14px;
+    }
+
+    .recipe-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .recipe-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: 'Kiwi Maru', serif;
+    }
+
+    .recipe-subtitle {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    /* 人数 & グラム調整エリア */
+    .controls-panel {
+      background-color: #faf6f0;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
+      border: 1px solid #f0e6d2;
+    }
+
+    .portion-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .portion-btns {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .portion-btn {
+      flex: 1;
+      padding: 8px 4px;
+      background-color: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .portion-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 5px rgba(189, 107, 40, 0.3);
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slider-row label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--primary-color);
+      cursor: pointer;
+      height: 6px;
+    }
+
+    .weight-display {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary-color);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* 計量カップ ＆ 調味料リスト Layout */
+    .recipe-content-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 580px) {
+      .recipe-content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* カラフルな層分け計量カップ */
+    .measuring-cup-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+    }
+
+    .measuring-cup {
+      width: 90px;
+      height: 140px;
+      border: 3px solid #6e5d53;
+      border-top: none;
+      border-radius: 0 0 14px 14px;
+      position: relative;
+      background-color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      flex-direction: column-reverse;
+      overflow: hidden;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.06);
+    }
+
+    .measuring-cup-handle {
+      position: absolute;
+      right: -16px;
+      top: 18px;
+      width: 14px;
+      height: 70px;
+      border: 3px solid #6e5d53;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .cup-layer {
+      width: 100%;
+      transition: height 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      border-bottom: 1px rgba(255,255,255,0.3) dashed;
+    }
+
+    .cup-caption {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* 調味料リスト */
+    .ingredients-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ingredient-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .ing-name-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .ing-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .ing-amounts {
+      text-align: right;
+    }
+
+    .ing-val-ml {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .ing-val-spoon {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* 作れる料理タグ＆リンクバッジ */
+    .dishes-tag-box {
+      background-color: var(--tag-bg);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+
+    .dishes-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dish-links-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .dish-link-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      background-color: #ffffff;
+      border: 1px solid #e2d3be;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .dish-link-badge:hover {
+      background-color: var(--link-hover);
+      border-color: var(--primary-color);
+      transform: translateY(-1px);
+    }
+
+    .dish-link-badge i {
+      font-size: 10px;
+      color: var(--accent-color);
+    }
+
+    /* アクションボタン */
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .add-print-btn {
+      flex: 1;
+      padding: 12px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.2s;
+      box-shadow: 0 3px 8px rgba(189, 107, 40, 0.2);
+    }
+
+    .add-print-btn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .add-print-btn.added {
+      background-color: #2b8a3e;
+      box-shadow: 0 3px 8px rgba(43, 138, 62, 0.2);
+    }
+
+    /* フローティングマイクボタン */
+    .voice-mic-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e07a5f, #bd6b28);
+      color: white;
+      border: 3.5px solid #ffffff;
+      box-shadow: 0 6px 20px rgba(224, 122, 95, 0.45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: pulse-ring 2.5s infinite;
+    }
+
+    .voice-mic-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .voice-mic-btn i {
+      font-size: 24px;
+    }
+
+    .voice-mic-btn span {
+      font-size: 9px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .voice-mic-btn.listening {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      animation: listening-anim 0.8s infinite alternate;
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(224, 122, 95, 0.6); }
+      70% { box-shadow: 0 0 0 16px rgba(224, 122, 95, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(224, 122, 95, 0); }
+    }
+
+    @keyframes listening-anim {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.12); }
+    }
+
+    /* マイレシピ作成エリア */
+    .my-recipe-form-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 20px;
+      border: 2px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .photo-select-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: #f0e6d2;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    /* 下部印刷アクセスバー */
+    .print-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #ffffff;
+      border-top: 2px solid var(--border-color);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+      z-index: 90;
+    }
+
+    .print-count-text {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .open-print-modal-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 印刷モーダル */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.55);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: var(--bg-color);
+      width: 100%;
+      max-width: 820px;
+      max-height: 90vh;
+      border-radius: 20px;
+      overflow-y: auto;
+      padding: 20px;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      font-family: 'Kiwi Maru', serif;
+    }
+
+    .print-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .print-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .modal-content, .modal-content * {
+        visibility: visible;
+      }
+      .modal-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        background: white;
+      }
+      .modal-header button, .card-actions, .voice-mic-btn, .print-bottom-bar, .photo-add-overlay {
+        display: none !important;
+      }
+      .print-card {
+        page-break-inside: avoid;
+        border: 1px solid #ccc;
+        margin-bottom: 14px;
+      }
+      /* 印刷時も計量カップと背景色を100%綺麗に保持する */
+      .measuring-cup-wrapper, .measuring-cup, .cup-layer {
+        visibility: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <div class="logo-icon">比</div>
+        <div class="logo-text">黄金比ソース手帳</div>
+      </div>
+      <div class="header-badge">
+        <i class="fa-solid fa-utensils"></i> 木目調キッチン
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="mode-switch-container">
+      <button class="mode-btn active" id="mode-source" onclick="switchMode('source')">
+        <i class="fa-solid fa-flask"></i> ソースから
+      </button>
+      <button class="mode-btn" id="mode-food" onclick="switchMode('food')">
+        <i class="fa-solid fa-drumstick-bite"></i> 食材から
+      </button>
+      <button class="mode-btn" id="mode-keton" onclick="switchMode('keton')">
+        <i class="fa-solid fa-seedling"></i> ケトン食スタイル
+      </button>
+      <button class="mode-btn" id="mode-my" onclick="switchMode('my')">
+        <i class="fa-solid fa-book-bookmark"></i> マイレシピ・写真帖
+      </button>
+    </div>
+
+    <!-- ケトン食1日スタイルガイド (ケトンモード時表示) -->
+    <div id="keton-guide-area" style="display:none;">
+      <div class="keton-style-banner">
+        <div class="keton-style-title">
+          <i class="fa-solid fa-clock-rotate-left"></i> 現代の食事スタイル切り替え (3食廃止対応)
+        </div>
+        <div class="style-selector">
+          <div class="style-chip active" onclick="setKetonStyle(this, '2食（昼・夜）')">2食（昼・夜）</div>
+          <div class="style-chip" onclick="setKetonStyle(this, '1食 ＋ おやつ')">1食 ＋ おやつ</div>
+          <div class="style-chip" onclick="setKetonStyle(this, '2食 ＋ おやつ')">2食 ＋ おやつ</div>
+        </div>
+        <div class="keton-info-box" id="keton-style-info">
+          💡 <strong>【2食（昼・夜）目安】</strong><br>
+          ・1日目標オイル（良質な脂質）: 約50〜60g / 塩分: 約5〜6g<br>
+          ・1食あたりオイル 25〜30g を各種ソース（塩麹オイルやアボカドだれ）で補給するのが理想です。
+        </div>
+      </div>
+    </div>
+
+    <!-- カテゴリー切り替え -->
+    <div class="category-scroll" id="category-container">
+      <!-- JavaScriptで動的表示 -->
+    </div>
+
+    <!-- 検索バー -->
+    <div class="search-status-bar">
+      <div class="search-input-box">
+        <i class="fa-solid fa-magnifying-glass" style="color: var(--text-sub);"></i>
+        <input type="text" id="search-input" placeholder="キーワード検索または右下のマイクで話しかけてにゃ..." oninput="filterRecipes()">
+      </div>
+      <button id="clear-search" style="display:none; background:none; border:none; color:var(--text-sub); cursor:pointer;" onclick="clearSearch()">
+        <i class="fa-solid fa-circle-xmark"></i> クリア
+      </button>
+    </div>
+
+    <!-- マイレシピ作成フォーム (マイレシピモード時のみ表示) -->
+    <div id="my-recipe-form-container" style="display:none;">
+      <div class="my-recipe-form-card">
+        <h3 style="font-family:'Kiwi Maru', serif; font-size:16px; margin-bottom:12px; color:var(--primary-color);">
+          <i class="fa-solid fa-plus-circle"></i> 新しいマイ黄金比ソースを登録
+        </h3>
+        <div class="form-group">
+          <label>ソース名</label>
+          <input type="text" id="my-title" class="form-control" placeholder="例: おばあちゃんの特製和風だれ">
+        </div>
+        <div class="form-group">
+          <label>作れる料理 (カンマ区切り)</label>
+          <input type="text" id="my-dishes" class="form-control" placeholder="例: 肉じゃが, 筑前煮, ぶり大根">
+        </div>
+        <div class="form-group">
+          <label>料理写真</label>
+          <label class="photo-select-btn">
+            <i class="fa-solid fa-camera"></i> 写真を選択 / 撮影
+            <input type="file" id="my-photo-input" accept="image/*" style="display:none;" onchange="previewMyPhoto(event)">
+          </label>
+          <div id="my-photo-preview" style="margin-top:8px; display:none;">
+            <img id="my-photo-img" src="" style="width:100px; height:70px; object-fit:cover; border-radius:8px;">
+          </div>
+        </div>
+        <button class="add-print-btn" onclick="saveMyRecipe()">このマイソースを保存</button>
+      </div>
+    </div>
+
+    <!-- 隠しファイルインプット（すべてのレシピカードの写真変更用） -->
+    <input type="file" id="global-photo-input" accept="image/*" style="display:none;" onchange="handleGlobalPhotoUpload(event)">
+
+    <div class="recipe-list" id="recipe-list">
+      <!-- レシピカードが自動挿入される -->
+    </div>
+  </main>
+
+  <!-- フローティングマイクボタン -->
+  <button class="voice-mic-btn" id="voice-btn" onclick="toggleVoiceRecognition()" title="声で検索">
+    <i class="fa-solid fa-microphone"></i>
+    <span>話しかける</span>
+  </button>
+
+  <!-- 印刷アクセス下部固定バー -->
+  <div class="print-bottom-bar">
+    <div class="print-count-text">
+      📌 印刷リスト: <span id="print-count">0</span> 件選択中
+    </div>
+    <button class="open-print-modal-btn" onclick="openPrintModal()">
+      <i class="fa-solid fa-print"></i> まとめて印刷プレビュー
+    </button>
+  </div>
+
+  <div class="modal-overlay" id="print-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-print"></i> まとめて印刷プレビュー</div>
+        <div>
+          <button class="open-print-modal-btn" onclick="window.print()" style="display:inline-flex; margin-right:8px;">
+            <i class="fa-solid fa-file-pdf"></i> 印刷 / PDF保存
+          </button>
+          <button style="background:#e5e5e5; border:none; padding:8px 14px; border-radius:14px; font-weight:700; cursor:pointer;" onclick="closePrintModal()">閉じる</button>
+        </div>
+      </div>
+      <div class="print-preview-grid" id="print-preview-grid">
+        <!-- 印刷プレビュー用カード -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 初期レシピデータ構造
+    const defaultRecipes = [
+      {
+        id: "shoga",
+        title: "生姜焼き黄金比",
+        subtitle: "醤油 : みりん : 酒 : おろし生姜",
+        category: "basic",
+        foodType: "meat",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        ingredients: [
+          { name: "醤油", ratio: 0.15, unit: "ml", color: "#4a2c11" },
+          { name: "みりん", ratio: 0.15, unit: "ml", color: "#d4a359" },
+          { name: "酒", ratio: 0.10, unit: "ml", color: "#e8d8b7" },
+          { name: "おろし生姜", ratio: 0.08, unit: "g", color: "#859458" }
+        ],
+        dishes: ["豚の生姜焼き", "鶏の生姜焼き", "厚揚げの生姜焼き"]
+      },
+      {
+        id: "teriyaki",
+        title: "照り焼き黄金比",
+        subtitle: "醤油 : みりん : 酒 : 砂糖",
+        category: "basic",
+        foodType: "fish",
+        image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        ingredients: [
+          { name: "醤油", ratio: 0.15, unit: "ml", color: "#4a2c11" },
+          { name: "みりん", ratio: 0.15, unit: "ml", color: "#d4a359" },
+          { name: "酒", ratio: 0.10, unit: "ml", color: "#e8d8b7" },
+          { name: "砂糖", ratio: 0.05, unit: "g", color: "#f0e6d2" }
+        ],
+        dishes: ["ぶりの照り焼き", "鶏の照り焼き", "れんこんの照り焼き"]
+      },
+      {
+        id: "sakana-nitsuke",
+        title: "魚の煮付け黄金比",
+        subtitle: "醤油 : みりん : 酒 : 水 : 砂糖",
+        category: "senior",
+        foodType: "fish",
+        image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        ingredients: [
+          { name: "醤油", ratio: 0.15, unit: "ml", color: "#4a2c11" },
+          { name: "みりん", ratio: 0.15, unit: "ml", color: "#d4a359" },
+          { name: "酒", ratio: 0.20, unit: "ml", color: "#e8d8b7" },
+          { name: "水", ratio: 0.30, unit: "ml", color: "#a5d8ff" },
+          { name: "砂糖", ratio: 0.08, unit: "g", color: "#f0e6d2" }
+        ],
+        dishes: ["カレイの煮付け", "さばの煮付け", "金目鯛の煮付け"]
+      },
+      {
+        id: "senior-ankake",
+        title: "やわらか和風あんかけ",
+        subtitle: "だし : 醤油 : みりん : 水溶き片栗粉",
+        category: "senior",
+        foodType: "fish",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        ingredients: [
+          { name: "だし汁", ratio: 0.50, unit: "ml", color: "#e2c08d" },
+          { name: "薄口醤油", ratio: 0.08, unit: "ml", color: "#6b4226" },
+          { name: "みりん", ratio: 0.08, unit: "ml", color: "#d4a359" },
+          { name: "水溶き片栗粉", ratio: 0.10, unit: "ml", color: "#ffffff" }
+        ],
+        dishes: ["白身魚のあんかけ", "豆腐ハンバーグのあんかけ", "柔らか野菜のあんかけ"]
+      },
+      {
+        id: "keton-shio-oil",
+        title: "ケトン和風塩麹オイルだれ",
+        subtitle: "オリーブオイル : 塩麹 : ごま油 : えごま油",
+        category: "keton",
+        foodType: "meat",
+        image: "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        isKeton: true,
+        oilGrams: 28, // 脂質（オイル）量目安
+        saltGrams: 2.1, // 塩分相当量
+        ingredients: [
+          { name: "オリーブオイル", ratio: 0.20, unit: "ml", color: "#82c91e" },
+          { name: "塩麹", ratio: 0.10, unit: "g", color: "#f8f9fa" },
+          { name: "ごま油", ratio: 0.08, unit: "ml", color: "#f59f00" },
+          { name: "おろしニンニク", ratio: 0.03, unit: "g", color: "#e9ecef" }
+        ],
+        dishes: ["蒸し鶏のオイルソテー", "豚バラとキャベツ炒め", "アボカドサーモンあえ"]
+      },
+      {
+        id: "french-toast",
+        title: "ふわもちフレンチトースト液",
+        subtitle: "ホエー（または牛乳）: 卵 : バター",
+        category: "snack",
+        foodType: "bread",
+        image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        ingredients: [
+          { name: "ホエー/牛乳", ratio: 0.60, unit: "ml", color: "#f8f9fa" },
+          { name: "砂糖/はちみつ", ratio: 0.10, unit: "g", color: "#f0e6d2" },
+          { name: "バター", ratio: 0.10, unit: "g", color: "#ffd43b" }
+        ],
+        dishes: ["食パンフレンチトースト", "米粉パンブレッド"]
+      }
+    ];
+
+    // アプリの状態
+    let currentMode = 'source'; // 'source', 'food', 'keton', 'my'
+    let currentCategory = 'all';
+    let printList = new Set();
+    let recipeState = {}; // { recipeId: { weight: 100, portion: 1 } }
+    let recipesList = [];
+    let targetPhotoRecipeId = null; // 写真選択用の一時ID
+    let myPhotoDataUrl = "";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // ローカルストレージからの読み込みまたはデフォルト
+      const savedRecipes = localStorage.getItem('kitchen_ratio_recipes');
+      if (savedRecipes) {
+        try { recipesList = JSON.parse(savedRecipes); } catch(e) { recipesList = defaultRecipes; }
+      } else {
+        recipesList = defaultRecipes;
+      }
+
+      recipesList.forEach(r => {
+        recipeState[r.id] = { weight: 100, portion: 1 };
+      });
+
+      renderCategories();
+      renderRecipes();
+    });
+
+    function saveRecipesToStorage() {
+      localStorage.setItem('kitchen_ratio_recipes', JSON.stringify(recipesList));
+    }
+
+    // モード切り替え
+    function switchMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`mode-${mode}`).classList.add('active');
+
+      document.getElementById('keton-guide-area').style.display = (mode === 'keton') ? 'block' : 'none';
+      document.getElementById('my-recipe-form-container').style.display = (mode === 'my') ? 'block' : 'none';
+
+      currentCategory = 'all';
+      renderCategories();
+      renderRecipes();
+    }
+
+    // ケトン食スタイルチップ選択
+    function setKetonStyle(el, styleName) {
+      document.querySelectorAll('.style-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      const infoBox = document.getElementById('keton-style-info');
+
+      if (styleName === '2食（昼・夜）') {
+        infoBox.innerHTML = `💡 <strong>【2食（昼・夜）目安】</strong><br>・1日目標オイル: 約50〜60g / 塩分: 約5〜6g<br>・1食あたりオイル 25〜30g を各種ソースで手軽に補給！`;
+      } else if (styleName === '1食 ＋ おやつ') {
+        infoBox.innerHTML = `💡 <strong>【1食 ＋ おやつ目安】</strong><br>・主食1食でオイル約35g、おやつ（ナッツやMCTオイル入りスナック）でオイル約15gを補給。`;
+      } else {
+        infoBox.innerHTML = `💡 <strong>【2食 ＋ おやつ目安】</strong><br>・2食で各20gずつ、おやつで10gのオイルを分散補給。胃腸に優しく続けやすいスタイル！`;
+      }
+    }
+
+    // カテゴリーボタン描画
+    function renderCategories() {
+      const container = document.getElementById('category-container');
+      let cats = [];
+
+      if (currentMode === 'source') {
+        cats = [
+          { id: 'all', label: 'すべて' },
+          { id: 'basic', label: '基本・和風' },
+          { id: 'senior', label: '高齢者向け' },
+          { id: 'keton', label: 'ケトン食' },
+          { id: 'snack', label: 'おやつ' }
+        ];
+      } else if (currentMode === 'food') {
+        cats = [
+          { id: 'all', label: 'すべて' },
+          { id: 'meat', label: 'お肉 🥩' },
+          { id: 'fish', label: 'お魚 🐟' },
+          { id: 'bread', label: 'パン 🍞' },
+          { id: 'vege', label: '野菜 🥦' }
+        ];
+      } else if (currentMode === 'keton') {
+        cats = [
+          { id: 'all', label: 'すべて' },
+          { id: 'keton', label: 'ケトンおすすめオイルだれ' }
+        ];
+      } else {
+        cats = [
+          { id: 'all', label: 'マイソース一覧' }
+        ];
+      }
+
+      container.innerHTML = cats.map(c => `
+        <button class="cat-btn ${currentCategory === c.id ? 'active' : ''}" onclick="selectCategory('${c.id}')">
+          ${c.label}
+        </button>
+      `).join('');
+    }
+
+    function selectCategory(catId) {
+      currentCategory = catId;
+      renderCategories();
+      renderRecipes();
+    }
+
+    function renderRecipes() {
+      const listContainer = document.getElementById('recipe-list');
+      const searchQuery = document.getElementById('search-input').value.trim().toLowerCase();
+
+      let filtered = recipesList.filter(r => {
+        if (currentMode === 'source' && currentCategory !== 'all' && r.category !== currentCategory) return false;
+        if (currentMode === 'food' && currentCategory !== 'all' && r.foodType !== currentCategory) return false;
+        if (currentMode === 'keton' && !r.isKeton && currentCategory !== 'all') return false;
+        if (currentMode === 'my' && !r.isMy) return false;
+
+        if (searchQuery) {
+          const matchTitle = r.title.toLowerCase().includes(searchQuery);
+          const matchSub = (r.subtitle || "").toLowerCase().includes(searchQuery);
+          const matchDishes = (r.dishes || []).some(d => d.toLowerCase().includes(searchQuery));
+          return matchTitle || matchSub || matchDishes;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div style="text-align:center; padding:40px; color:var(--text-sub);">
+            <i class="fa-solid fa-utensils" style="font-size:36px; margin-bottom:10px; color:var(--border-color);"></i>
+            <p>該当する黄金比レシピが見つからなかったにゃ。<br>マイクで話しかけるか検索ワードを変えてみてね！</p>
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(r => {
+        if (!recipeState[r.id]) recipeState[r.id] = { weight: 100, portion: 1 };
+        const state = recipeState[r.id];
+        const weight = state.weight;
+        const portion = state.portion;
+        const isAdded = printList.has(r.id);
+
+        // 計量値とスプーン換算
+        const computedIngs = r.ingredients.map(ing => {
+          const val = Math.round(weight * ing.ratio);
+          return {
+            ...ing,
+            val: val,
+            spoonText: getSpoonText(val, ing.unit)
+          };
+        });
+
+        // 作れる料理リンクバッジの作成
+        const dishesArray = Array.isArray(r.dishes) ? r.dishes : (r.dishes ? r.dishes.split(',') : []);
+        const dishBadges = dishesArray.map(d => {
+          const dishName = d.trim();
+          const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(dishName + ' レシピ')}`;
+          return `
+            <a href="${googleUrl}" target="_blank" class="dish-link-badge" title="${dishName}のレシピをGoogle検索">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> ${dishName}
+            </a>
+          `;
+        }).join('');
+
+        return `
+          <div class="recipe-card" id="card-${r.id}">
+            <!-- パチッと撮影・写真変更エリア -->
+            <div class="recipe-image-wrapper">
+              <img src="${r.image}" alt="${r.title}">
+              <div class="photo-add-overlay" onclick="triggerPhotoUpload('${r.id}')">
+                <i class="fa-solid fa-camera"></i> 写真撮影 / 変更
+              </div>
+            </div>
+
+            <div class="recipe-card-body">
+              <div class="recipe-header">
+                <div class="recipe-title-row">
+                  <div class="recipe-title">${r.title}</div>
+                </div>
+                <div class="recipe-subtitle">${r.subtitle || ''}</div>
+              </div>
+
+              <!-- 人数 & グラム調整 -->
+              <div class="controls-panel">
+                <div class="portion-label"><i class="fa-solid fa-users"></i> 人数選択 (ワンタップ換算)</div>
+                <div class="portion-btns">
+                  ${[1, 2, 3, 4].map(p => `
+                    <button class="portion-btn ${portion === p ? 'active' : ''}" onclick="setPortion('${r.id}', ${p})">
+                      ${p}人前
+                    </button>
+                  `).join('')}
+                </div>
+                <div class="slider-row">
+                  <label>お肉・お魚の重さ</label>
+                  <input type="range" min="50" max="600" step="10" value="${weight}" oninput="updateWeight('${r.id}', this.value)">
+                  <div class="weight-display">${weight} g</div>
+                </div>
+              </div>
+
+              <!-- 計量カップ ＆ 調味料一覧 -->
+              <div class="recipe-content-grid">
+                <!-- カラフル計量カップ -->
+                <div class="measuring-cup-wrapper">
+                  <div class="measuring-cup">
+                    <div class="measuring-cup-handle"></div>
+                    ${computedIngs.map(ing => `
+                      <div class="cup-layer" style="height: ${(ing.ratio * 100)}%; background-color: ${ing.color};">
+                        ${ing.name}
+                      </div>
+                    `).join('')}
+                  </div>
+                  <div class="cup-caption">※比率イメージ</div>
+                </div>
+
+                <!-- 調味料リスト -->
+                <ul class="ingredients-list">
+                  ${computedIngs.map(ing => `
+                    <li class="ingredient-item">
+                      <div class="ing-name-group">
+                        <span class="color-dot" style="background-color: ${ing.color};"></span>
+                        <span class="ing-name">${ing.name}</span>
+                      </div>
+                      <div class="ing-amounts">
+                        <div class="ing-val-ml">${ing.val} ${ing.unit}</div>
+                        <div class="ing-val-spoon">（${ing.spoonText}）</div>
+                      </div>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+
+              <!-- 作れる料理リンクバッジ -->
+              <div class="dishes-tag-box">
+                <div class="dishes-title"><i class="fa-solid fa-utensils"></i> 作れる料理 (タップで作り方を検索):</div>
+                <div class="dish-links-container">
+                  ${dishBadges}
+                </div>
+              </div>
+
+              <div class="card-actions">
+                <button class="add-print-btn ${isAdded ? 'added' : ''}" onclick="togglePrintList('${r.id}')">
+                  <i class="fa-solid ${isAdded ? 'fa-check' : 'fa-thumbtack'}"></i>
+                  ${isAdded ? '印刷リストに追加済み' : '印刷リストに追加'}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getSpoonText(val, unit) {
+      if (unit === 'g') return `約 ${val}g`;
+      if (val >= 180) {
+        return `約 ${(val / 180).toFixed(1)} カップ`;
+      } else if (val >= 15) {
+        return `大さじ 約 ${(val / 15).toFixed(1)} 杯`;
+      } else {
+        return `小さじ 約 ${(val / 5).toFixed(1)} 杯`;
+      }
+    }
+
+    // 人数ボタン変更
+    function setPortion(id, portion) {
+      recipeState[id].portion = portion;
+      recipeState[id].weight = portion * 100;
+      renderRecipes();
+    }
+
+    // 重さスライダー変更
+    function updateWeight(id, weight) {
+      recipeState[id].weight = parseInt(weight);
+      renderRecipes();
+    }
+
+    function triggerPhotoUpload(recipeId) {
+      targetPhotoRecipeId = recipeId;
+      document.getElementById('global-photo-input').click();
+    }
+
+    function handleGlobalPhotoUpload(event) {
+      const file = event.target.files[0];
+      if (file && targetPhotoRecipeId) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataUrl = e.target.result;
+          const targetRecipe = recipesList.find(r => r.id === targetPhotoRecipeId);
+          if (targetRecipe) {
+            targetRecipe.image = dataUrl;
+            saveRecipesToStorage();
+            renderRecipes();
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // マイレシピ用写真プレビュー
+    function previewMyPhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          myPhotoDataUrl = e.target.result;
+          document.getElementById('my-photo-img').src = myPhotoDataUrl;
+          document.getElementById('my-photo-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // マイレシピ保存
+    function saveMyRecipe() {
+      const title = document.getElementById('my-title').value.trim();
+      const dishesStr = document.getElementById('my-dishes').value.trim();
+
+      if (!title) {
+        alert("ソース名を入力してね！");
+        return;
+      }
+
+      const newId = "my-" + Date.now();
+      const newRecipe = {
+        id: newId,
+        title: title,
+        subtitle: "手作りマイ黄金比",
+        category: "basic",
+        foodType: "meat",
+        isMy: true,
+        image: myPhotoDataUrl || "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80",
+        baseWeight: 100,
+        ingredients: [
+          { name: "醤油", ratio: 0.15, unit: "ml", color: "#4a2c11" },
+          { name: "みりん", ratio: 0.15, unit: "ml", color: "#d4a359" }
+        ],
+        dishes: dishesStr ? dishesStr.split(',') : ["お好みのお料理"]
+      };
+
+      recipesList.unshift(newRecipe);
+      recipeState[newId] = { weight: 100, portion: 1 };
+      saveRecipesToStorage();
+
+      // リセット
+      document.getElementById('my-title').value = '';
+      document.getElementById('my-dishes').value = '';
+      document.getElementById('my-photo-preview').style.display = 'none';
+      myPhotoDataUrl = "";
+
+      alert("マイ黄金比ソースを保存したにゃ！");
+      renderRecipes();
+    }
+
+    // 印刷リスト追加・解除
+    function togglePrintList(id) {
+      if (printList.has(id)) {
+        printList.delete(id);
+      } else {
+        printList.add(id);
+      }
+      document.getElementById('print-count').textContent = printList.size;
+      renderRecipes();
+    }
+
+    // 検索入力処理
+    function filterRecipes() {
+      const val = document.getElementById('search-input').value;
+      document.getElementById('clear-search').style.display = val ? 'block' : 'none';
+      renderRecipes();
+    }
+
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      document.getElementById('clear-search').style.display = 'none';
+      renderRecipes();
+    }
+
+    let recognition = null;
+    let isListening = false;
+
+    function toggleVoiceRecognition() {
+      const btn = document.getElementById('voice-btn');
+
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("お使いのブラウザは音声認識に対応していないにゃ。ChromeやSafariで試してみてね！");
+        return;
+      }
+
+      if (isListening) {
+        if (recognition) recognition.stop();
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.lang = 'ja-JP';
+
+      recognition.onstart = () => {
+        isListening = true;
+        btn.classList.add('listening');
+        btn.querySelector('span').textContent = "聞いてるにゃ…";
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('search-input').value = transcript;
+        filterRecipes();
+
+        // 特別処理：音声ワードに応じた切り替え
+        if (transcript.includes('魚') || transcript.includes('さかな')) {
+          switchMode('food');
+          selectCategory('fish');
+        } else if (transcript.includes('肉') || transcript.includes('豚') || transcript.includes('鶏')) {
+          switchMode('food');
+          selectCategory('meat');
+        }
+
+        if (transcript.includes('2匹') || transcript.includes('2人')) {
+          recipesList.forEach(r => setPortion(r.id, 2));
+        }
+      };
+
+      recognition.onerror = () => { stopListening(); };
+      recognition.onend = () => { stopListening(); };
+      recognition.start();
+    }
+
+    function stopListening() {
+      isListening = false;
+      const btn = document.getElementById('voice-btn');
+      btn.classList.remove('listening');
+      btn.querySelector('span').textContent = "話しかける";
+    }
+
+    function openPrintModal() {
+      if (printList.size === 0) {
+        alert("印刷したいレシピの「印刷リストに追加」ボタンを押してね！");
+        return;
+      }
+
+      const grid = document.getElementById('print-preview-grid');
+      const selectedRecipes = recipesList.filter(r => printList.has(r.id));
+
+      grid.innerHTML = selectedRecipes.map(r => {
+        const state = recipeState[r.id] || { weight: 100, portion: 1 };
+        const weight = state.weight;
+        const computedIngs = r.ingredients.map(ing => {
+          const val = Math.round(weight * ing.ratio);
+          return {
+            ...ing,
+            val: val,
+            spoonText: getSpoonText(val, ing.unit)
+          };
+        });
+
+        const dishesText = Array.isArray(r.dishes) ? r.dishes.join(', ') : (r.dishes || '');
+
+        return `
+          <div class="print-card">
+            <h3 style="font-family:'Kiwi Maru', serif; font-size:17px; margin-bottom:4px;">${r.title}</h3>
+            <div style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">【${state.portion}人前 / ${weight}g 基準】</div>
+
+            <div style="display:flex; gap:14px; align-items:center; margin-bottom:10px;">
+              <!-- 印刷時もくっきり表示される計量カップ -->
+              <div class="measuring-cup-wrapper">
+                <div class="measuring-cup" style="width:65px; height:95px;">
+                  ${computedIngs.map(ing => `
+                    <div class="cup-layer" style="height: ${(ing.ratio * 100)}%; background-color: ${ing.color}; font-size:8px;">
+                      ${ing.name}
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <ul style="list-style:none; flex:1; font-size:12px;">
+                ${computedIngs.map(ing => `
+                  <li style="display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px dashed #eee;">
+                    <span>・${ing.name}</span>
+                    <strong>${ing.val} ${ing.unit} <span style="font-weight:normal; font-size:10px; color:#666;">(${ing.spoonText})</span></strong>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+
+            <div style="font-size:11px; color:var(--text-sub);">
+              作れる料理: ${dishesText}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('print-modal').classList.add('active');
+    }
+
+    function closePrintModal() {
+      document.getElementById('print-modal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
